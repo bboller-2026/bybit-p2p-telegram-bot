@@ -22,19 +22,18 @@ def start(message):
         "🤖 Bybit P2P Assistant is online!\n\n"
         "Use /bybit to test the Bybit connection."
     )
-
 @bot.message_handler(commands=["bybit"])
 def bybit_test(message):
     try:
-        result = bybit.get_wallet_balance(
-            accountType="UNIFIED",
-            coin="USDT"
+        result = bybit.get_open_orders(
+            category="spot",
+            openOnly=0
         )
 
         if result.get("retCode") == 0:
             bot.reply_to(
                 message,
-                "✅ Bybit connection successful!"
+                "✅ Bybit API connection successful!"
             )
         else:
             bot.reply_to(
