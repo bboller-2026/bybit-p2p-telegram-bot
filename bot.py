@@ -1,5 +1,6 @@
 import os
 import telebot
+import urllib.request
 from pybit.unified_trading import HTTP
 
 BOT_TOKEN = os.getenv("BOT_TOKEN")
@@ -46,5 +47,12 @@ def bybit_test(message):
             message,
             f"❌ Connection error:\n{str(e)}"
         )
+@bot.message_handler(commands=["ip"])
+def get_ip(message):
+    try:
+        ip = urllib.request.urlopen("https://api.ipify.org", timeout=10).read().decode()
+        bot.reply_to(message, f"🌐 Railway public IP:\n{ip}")
+    except Exception as e:
+        bot.reply_to(message, f"❌ Could not get IP:\n{str(e)}")
 
 bot.infinity_polling()
