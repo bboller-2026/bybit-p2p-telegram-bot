@@ -7,6 +7,16 @@ BOT_TOKEN = os.getenv("BOT_TOKEN")
 BYBIT_API_KEY = os.getenv("BYBIT_API_KEY")
 BYBIT_API_SECRET = os.getenv("BYBIT_API_SECRET")
 
+@bot.message_handler(commands=["checkkey"])
+def check_key(message):
+    key = os.getenv("BYBIT_API_KEY", "")
+    secret = os.getenv("BYBIT_API_SECRET", "")
+
+    bot.reply_to(
+        message,
+        f"🔑 API key ending: {key[-4:] if key else 'MISSING'}\n"
+        f"🔐 API secret present: {'YES' if secret else 'NO'}"
+    )
 bot = telebot.TeleBot(BOT_TOKEN)
 
 bybit = HTTP(
