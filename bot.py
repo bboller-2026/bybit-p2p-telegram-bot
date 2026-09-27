@@ -15,6 +15,7 @@ bybit = HTTP(
     api_secret=BYBIT_API_SECRET
 )
 
+
 @bot.message_handler(commands=["start"])
 def start(message):
     bot.reply_to(
@@ -22,6 +23,7 @@ def start(message):
         "🤖 Bybit P2P Assistant is online!\n\n"
         "Use /bybit to test the Bybit connection."
     )
+
 
 @bot.message_handler(commands=["checkkey"])
 def check_key(message):
@@ -34,18 +36,16 @@ def check_key(message):
         f"🔐 API secret present: {'YES' if secret else 'NO'}"
     )
 
+
 @bot.message_handler(commands=["bybit"])
 def bybit_test(message):
     try:
-        result = bybit.get_open_orders(
-            category="spot",
-            openOnly=0
-        )
+        result = bybit.get_account_info()
 
         if result.get("retCode") == 0:
             bot.reply_to(
                 message,
-                "✅ Bybit API connection successful!"
+                "✅ Bybit API authentication successful!"
             )
         else:
             bot.reply_to(
@@ -58,6 +58,7 @@ def bybit_test(message):
             message,
             f"❌ Connection error:\n{str(e)}"
         )
+
 
 @bot.message_handler(commands=["ip"])
 def get_ip(message):
@@ -77,5 +78,6 @@ def get_ip(message):
             message,
             f"❌ Could not get IP:\n{str(e)}"
         )
+
 
 bot.infinity_polling()
