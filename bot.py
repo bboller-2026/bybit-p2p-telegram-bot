@@ -21,7 +21,8 @@ def start(message):
     bot.reply_to(
         message,
         "🤖 Bybit P2P Assistant is online!\n\n"
-        "Use /bybit to test the Bybit connection."
+        "Use /bybit to test the Bybit connection.\n"
+        "Use /p2ptest to test P2P API access."
     )
 
 
@@ -57,6 +58,31 @@ def bybit_test(message):
         bot.reply_to(
             message,
             f"❌ Connection error:\n{str(e)}"
+        )
+
+
+@bot.message_handler(commands=["p2ptest"])
+def p2p_test(message):
+    try:
+        result = bybit.get_account_information()
+
+        if result.get("retCode") == 0:
+            bot.reply_to(
+                message,
+                "✅ P2P API access successful!\n\n"
+                f"Response:\n{result}"
+            )
+        else:
+            bot.reply_to(
+                message,
+                "❌ P2P API returned an error:\n\n"
+                f"{result}"
+            )
+
+    except Exception as e:
+        bot.reply_to(
+            message,
+            f"❌ P2P connection error:\n{str(e)}"
         )
 
 
